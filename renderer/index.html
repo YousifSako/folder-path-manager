@@ -1,183 +1,303 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="light" lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Folder Path Manager</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script id="tailwind-config">
   tailwind.config = {
+    darkMode: "class",
     theme: {
       extend: {
         colors: {
-          "bg": "#ffffff",
-          "fg": "#0a0a0a",
-          "muted": "#737373",
-          "line": "#e5e5e5",
-          "surface": "#fafafa",
-          "ink": "#0a0a0a"
+          "surface-tint": "#5f5e60",
+          "inverse-on-surface": "#f0f1f2",
+          "on-tertiary": "#ffffff",
+          "inverse-surface": "#2f3132",
+          "surface-container-lowest": "#ffffff",
+          "on-primary-fixed": "#1c1b1d",
+          "tertiary-container": "#00174b",
+          "outline-variant": "#c8c5ca",
+          "on-primary-fixed-variant": "#474649",
+          "secondary-fixed": "#e3e1ec",
+          "error-container": "#ffdad6",
+          "surface": "#f9f9fa",
+          "primary": "#000000",
+          "surface-container-high": "#e8e8e9",
+          "on-secondary-container": "#63646c",
+          "surface-variant": "#e2e2e3",
+          "tertiary-fixed": "#dbe1ff",
+          "on-error": "#ffffff",
+          "secondary-container": "#e3e1ec",
+          "tertiary": "#000000",
+          "on-secondary-fixed": "#1a1b22",
+          "background": "#f9f9fa",
+          "outline": "#78767b",
+          "secondary": "#5d5e66",
+          "secondary-fixed-dim": "#c6c5cf",
+          "primary-fixed-dim": "#c8c6c8",
+          "on-tertiary-fixed-variant": "#003ea8",
+          "on-error-container": "#93000a",
+          "surface-bright": "#f9f9fa",
+          "on-surface-variant": "#47464a",
+          "on-primary-container": "#858386",
+          "inverse-primary": "#c8c6c8",
+          "primary-fixed": "#e5e1e4",
+          "on-secondary-fixed-variant": "#46464e",
+          "on-tertiary-fixed": "#00174b",
+          "on-background": "#1a1c1d",
+          "on-secondary": "#ffffff",
+          "tertiary-fixed-dim": "#b4c5ff",
+          "surface-dim": "#dadadb",
+          "surface-container": "#eeeeef",
+          "on-tertiary-container": "#497cff",
+          "error": "#ba1a1a",
+          "on-primary": "#ffffff",
+          "surface-container-highest": "#e2e2e3",
+          "on-surface": "#1a1c1d",
+          "surface-container-low": "#f3f3f4",
+          "primary-container": "#1c1b1d"
+        },
+        borderRadius: {
+          "DEFAULT": "0.25rem",
+          "lg": "0.5rem",
+          "xl": "0.75rem",
+          "full": "9999px"
+        },
+        spacing: {
+          "margin": "1rem",
+          "space-lg": "1rem",
+          "space-xs": "0.25rem",
+          "space-sm": "0.5rem",
+          "space-xl": "1.5rem",
+          "gutter": "0.75rem",
+          "space-md": "0.75rem"
         },
         fontFamily: {
-          "body": ["Inter","sans-serif"],
-          "mono": ["JetBrains Mono","monospace"]
+          "headline-md": ["Inter"],
+          "body-md": ["Inter"],
+          "body-sm": ["Inter"],
+          "caption": ["Inter"],
+          "label-md": ["JetBrains Mono"],
+          "headline-lg": ["Inter"],
+          "label-sm": ["JetBrains Mono"]
         },
-        borderRadius: { "DEFAULT": "8px", "lg": "10px", "xl": "12px", "2xl": "16px", "full": "9999px" }
+        fontSize: {
+          "headline-md": ["1rem", { "lineHeight": "1.5rem", "letterSpacing": "-0.011em", "fontWeight": "600" }],
+          "body-md": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "-0.006em", "fontWeight": "400" }],
+          "body-sm": ["0.8125rem", { "lineHeight": "1.125rem", "letterSpacing": "0em", "fontWeight": "400" }],
+          "caption": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.02em", "fontWeight": "500" }],
+          "label-md": ["0.8125rem", { "lineHeight": "1.125rem", "letterSpacing": "-0.02em", "fontWeight": "500" }],
+          "headline-lg": ["1.25rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+          "label-sm": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "-0.01em", "fontWeight": "400" }]
+        }
       }
     }
   }
 </script>
 <style>
-  body { font-family: 'Inter', sans-serif; background: #ffffff; color: #0a0a0a; -webkit-font-smoothing: antialiased; }
-  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 22; vertical-align: middle; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 22; }
   ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: #d4d4d4; }
-  ::-webkit-scrollbar-thumb:hover { background: #0a0a0a; }
+  ::-webkit-scrollbar-thumb { background: #c8c5ca; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #78767b; }
   .drag-region { -webkit-app-region: drag; }
   .no-drag { -webkit-app-region: no-drag; }
-  .row-selected { background: #0a0a0a; color: #ffffff; }
-  .row-selected .muted-text { color: rgba(255,255,255,0.6); }
-  input[type="checkbox"] { accent-color: #0a0a0a; border-radius: 0; }
-  .ease { transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease, opacity 160ms ease; }
-  .backdrop { backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
-  .hairline { border-color: #e5e5e5; }
+  .dragging { opacity: 0.4; }
+  .drag-over { border-top: 2px solid #000000; }
 </style>
 </head>
-<body class="h-screen overflow-hidden flex flex-col">
+<body class="bg-surface-container-low text-on-surface font-body-md antialiased min-h-screen flex flex-col">
   <!-- Title bar -->
-  <header class="drag-region h-12 flex items-center justify-between pl-6 pr-40 bg-white border-b border-line flex-shrink-0">
-    <div class="flex items-center gap-3 no-drag">
-      <span class="material-symbols-outlined text-ink text-[20px]">folder_managed</span>
-      <span class="font-semibold text-ink tracking-tight text-[15px]">Folder Path Manager</span>
+  <header class="flex justify-between items-center w-full px-space-md h-14 border-b border-surface-variant shrink-0 drag-region bg-surface-container-lowest">
+    <div class="flex items-center gap-space-sm min-w-0 no-drag">
+      <span class="font-headline-md text-on-surface tracking-tight">Folder Path Manager</span>
     </div>
-    <div class="flex items-center gap-3 no-drag">
-      <div id="userBadge" class="hidden items-center gap-2 px-3 py-1 border border-line text-sm rounded-full">
-        <span class="material-symbols-outlined text-ink text-base">person</span>
-        <span id="userBadgeName" class="text-ink text-sm"></span>
+    <div class="flex items-center gap-space-md no-drag mr-36">
+      <div id="userBadge" class="hidden items-center gap-2 px-2.5 py-1 rounded-full bg-surface-container-low border border-surface-variant hover:bg-surface-variant transition-colors cursor-pointer" title="Click to change username">
+        <div class="relative w-5 h-5 rounded-full overflow-hidden bg-surface-variant flex items-center justify-center">
+          <span class="material-symbols-outlined !text-[14px] text-secondary">person</span>
+        </div>
+        <span id="userBadgeName" class="text-body-sm font-medium text-on-surface"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
       </div>
     </div>
   </header>
 
-  <!-- Toast (top-center, never overlaps buttons) -->
-  <div id="toast" class="hidden fixed top-16 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 border border-ink bg-white text-ink text-sm font-medium ease rounded-lg"></div>
+  <!-- Toast -->
+  <div id="toast" class="hidden fixed top-16 right-4 z-50 max-w-xs px-4 py-2 rounded-lg border border-outline bg-surface-container-lowest text-on-surface text-body-sm shadow-xs"></div>
 
-  <!-- Main -->
-  <div class="flex flex-1 overflow-hidden">
+  <!-- Main workspace -->
+  <div class="flex-1 flex min-h-0">
     <!-- Sidebar -->
-    <aside class="w-64 flex-shrink-0 bg-white border-r border-line flex flex-col p-5 gap-4">
-      <button id="btnAdd" class="no-drag flex items-center justify-center gap-2 w-full py-3 bg-ink text-white font-medium text-sm ease hover:opacity-80 rounded-lg">
-        <span class="material-symbols-outlined text-[18px]">add</span>
-        Add Folder
-      </button>
-      <div class="flex gap-2">
-        <button id="btnImport" class="no-drag flex-1 flex items-center justify-center gap-1.5 py-2.5 border border-line bg-white text-ink hover:bg-ink hover:text-white ease text-sm font-medium rounded-lg">
-          <span class="material-symbols-outlined text-[17px]">file_upload</span>
-          Import
+    <aside class="flex flex-col h-full w-[280px] shrink-0 p-space-md border-r border-surface-variant select-none bg-surface-container-low overflow-y-auto">
+      <div class="space-y-space-md">
+        <button id="btnAdd" class="w-full h-8 px-3 rounded-lg bg-primary hover:bg-surface-variant hover:text-primary active:scale-[0.98] text-on-primary border border-primary flex items-center justify-center gap-2 font-medium text-body-sm transition-all duration-150 shadow-xs no-drag">
+          <span class="material-symbols-outlined !text-[16px]">add</span>
+          <span>Add Folder</span>
         </button>
-        <button id="btnExport" class="no-drag flex-1 flex items-center justify-center gap-1.5 py-2.5 border border-line bg-white text-ink hover:bg-ink hover:text-white ease text-sm font-medium rounded-lg">
-          <span class="material-symbols-outlined text-[17px]">file_download</span>
-          Export
-        </button>
-      </div>
+        <div class="grid grid-cols-2 gap-2">
+          <button id="btnImport" class="h-8 px-2 rounded-lg bg-surface-container-lowest border border-surface-variant hover:bg-surface-variant text-on-surface flex items-center justify-center gap-1.5 text-body-sm font-medium transition-colors no-drag">
+            <span class="material-symbols-outlined !text-[15px] text-secondary">file_upload</span>
+            <span class="truncate">Import</span>
+          </button>
+          <button id="btnExport" class="h-8 px-2 rounded-lg bg-surface-container-lowest border border-surface-variant hover:bg-surface-variant text-on-surface flex items-center justify-center gap-1.5 text-body-sm font-medium transition-colors no-drag">
+            <span class="material-symbols-outlined !text-[15px] text-secondary">file_download</span>
+            <span class="truncate">Export</span>
+          </button>
+        </div>
 
-      <div class="mt-3">
-        <div class="text-[11px] uppercase tracking-[0.12em] text-muted font-semibold mb-2 px-1">Overview</div>
-        <div class="border border-line p-4 text-sm space-y-2.5 rounded-lg">
-          <div class="flex justify-between items-center"><span class="text-muted">Total paths</span><span id="statTotal" class="font-semibold text-ink tabular-nums">0</span></div>
-          <div class="flex justify-between items-center"><span class="text-muted">Selected</span><span id="statSelected" class="font-semibold text-ink tabular-nums">0</span></div>
+        <!-- Overview -->
+        <div class="space-y-1">
+          <div class="px-2 py-1 text-caption font-caption text-secondary uppercase tracking-wider">Overview</div>
+          <div class="bg-surface-container-lowest border border-surface-variant rounded-lg p-space-md space-y-2 text-body-sm">
+            <div class="flex justify-between items-center"><span class="text-secondary">Total paths</span><span id="statTotal" class="font-medium text-on-surface tabular-nums">0</span></div>
+            <div class="flex justify-between items-center"><span class="text-secondary">Selected</span><span id="statSelected" class="font-medium text-on-surface tabular-nums">0</span></div>
+            <div class="flex justify-between items-center"><span class="text-secondary">Total size</span><span id="statSize" class="font-medium text-on-surface tabular-nums">—</span></div>
+          </div>
+        </div>
+
+        <!-- View -->
+        <div class="space-y-1">
+          <div class="px-2 py-1 text-caption font-caption text-secondary uppercase tracking-wider">View</div>
+          <div class="space-y-2">
+            <input id="searchInput" type="text" placeholder="Search paths..." class="w-full h-8 px-3 rounded-lg border border-surface-variant bg-surface-container-lowest text-body-sm focus:ring-0 focus:border-primary"/>
+            <div class="flex gap-2">
+              <select id="sortSelect" class="flex-1 h-8 px-2 rounded-lg border border-surface-variant bg-surface-container-lowest text-body-sm">
+                <option value="name">Sort: Name</option>
+                <option value="date">Sort: Date added</option>
+                <option value="size">Sort: Size</option>
+              </select>
+              <select id="groupSelect" class="flex-1 h-8 px-2 rounded-lg border border-surface-variant bg-surface-container-lowest text-body-sm">
+                <option value="none">Group: None</option>
+                <option value="drive">Group: Drive</option>
+                <option value="parent">Group: Parent</option>
+              </select>
+            </div>
+            <label class="flex items-center gap-2 text-caption text-secondary px-1">
+              <input type="checkbox" id="sortDesc" class="w-3.5 h-3.5 rounded border-outline"/> Descending
+            </label>
+          </div>
         </div>
       </div>
-
-      <div class="mt-auto text-[11px] text-muted leading-relaxed px-1">
-        Paths stored locally. Delete removes the folder from disk.
-      </div>
+      <div class="text-caption text-secondary px-2 mt-space-md">Paths stored locally. Delete clears folder contents (folder stays).</div>
     </aside>
 
     <!-- Content -->
-    <main class="flex-1 flex flex-col overflow-hidden bg-white">
+    <main class="flex-1 flex flex-col min-w-0 bg-surface">
       <!-- Toolbar -->
-      <div class="flex items-center justify-between px-8 py-5 border-b border-line flex-shrink-0">
-        <div>
-          <h1 class="text-xl font-semibold text-ink tracking-tight">Monitored Folders</h1>
-          <p class="text-xs text-muted mt-1">Add, select, and delete folders. Multi-select supported.</p>
+      <div class="flex items-center justify-between px-space-xl py-space-md border-b border-surface-variant bg-surface-container-lowest shrink-0">
+        <div class="flex items-center gap-3 min-w-0">
+          <h1 class="font-headline-md text-on-surface">Monitored Folders</h1>
+          <span id="activeCount" class="px-2 py-0.5 rounded-full bg-surface-container text-body-sm font-label-sm text-secondary border border-surface-variant">0 active</span>
         </div>
         <div class="flex items-center gap-2">
-          <button id="btnSelectAll" class="no-drag px-3 py-1.5 text-sm text-muted hover:text-ink ease rounded-md">Select all</button>
-          <button id="btnClearSel" class="no-drag px-3 py-1.5 text-sm text-muted hover:text-ink ease rounded-md">Clear</button>
+          <button id="btnSelectAll" class="h-8 px-3 rounded-lg bg-surface-container-lowest border border-surface-variant hover:bg-surface-variant text-body-sm font-medium text-on-surface transition-colors no-drag">Select All</button>
+          <button id="btnClearSel" class="h-8 px-3 rounded-lg bg-surface-container-lowest border border-surface-variant hover:bg-surface-variant text-body-sm font-medium text-secondary hover:text-on-surface transition-colors no-drag">Clear Selection</button>
         </div>
       </div>
 
       <!-- List -->
-      <div id="listContainer" class="flex-1 overflow-y-auto px-8 py-6">
+      <div id="listContainer" class="flex-1 p-space-xl space-y-3 overflow-y-auto">
         <div id="emptyState" class="hidden flex flex-col items-center justify-center h-full text-center gap-3">
-          <span class="material-symbols-outlined text-[56px] text-line">folder_off</span>
-          <div class="text-muted text-sm">No folders added yet.</div>
-          <div class="text-xs text-muted/70">Click "Add Folder" to get started.</div>
+          <span class="material-symbols-outlined text-[56px] text-outline-variant">folder_off</span>
+          <div class="text-secondary text-body-md">No folders added yet.</div>
+          <div class="text-caption text-secondary/70">Click "Add Folder" to get started.</div>
         </div>
-        <ul id="pathList" class="space-y-2"></ul>
+        <div id="groupsContainer" class="space-y-3"></div>
+        <div id="noMatch" class="hidden text-body-sm text-secondary text-center py-8">No paths match your search.</div>
       </div>
 
-      <!-- Bottom action bar -->
-      <div class="flex items-center justify-between px-8 py-4 border-t border-line bg-white flex-shrink-0">
-        <div class="text-sm text-muted">
-          <span id="selectedCount" class="font-semibold text-ink tabular-nums">0</span> selected
+      <!-- Bottom bar -->
+      <div class="flex items-center justify-between px-space-xl py-space-md border-t border-surface-variant bg-surface-container-lowest shrink-0">
+        <div class="text-body-sm text-secondary">
+          <span id="selectedCount" class="font-medium text-on-surface tabular-nums">0</span> selected
         </div>
-        <button id="btnDelete" class="no-drag flex items-center gap-2 px-5 py-2.5 bg-ink text-white font-medium text-sm ease hover:opacity-80 disabled:opacity-25 disabled:cursor-not-allowed rounded-lg" disabled>
-          <span class="material-symbols-outlined text-[18px]">delete</span>
-          Delete Selected
+        <button id="btnDelete" class="h-9 px-4 rounded-lg bg-primary text-on-primary font-medium text-body-sm flex items-center gap-2 transition-all active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed no-drag" disabled>
+          <span class="material-symbols-outlined !text-[18px]">delete</span>
+          Delete Contents
         </button>
       </div>
     </main>
   </div>
 
-  <!-- First-run modal -->
+  <!-- First-run / Account modal -->
   <div id="firstRunModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop">
-    <div class="bg-white w-[440px] max-w-[90vw] border border-line overflow-hidden ease rounded-xl">
-      <div class="px-6 py-5 border-b border-line">
+    <div class="bg-surface-container-lowest w-[440px] max-w-[90vw] border border-surface-variant rounded-xl overflow-hidden shadow-2xl">
+      <div class="px-space-xl py-space-lg border-b border-surface-variant">
         <div class="flex items-center gap-2">
-          <span class="material-symbols-outlined text-ink text-[20px]">account_circle</span>
-          <h3 class="text-base font-semibold text-ink">First-Run Setup</h3>
+          <span class="material-symbols-outlined text-on-surface">account_circle</span>
+          <h3 class="font-headline-md text-on-surface">Account</h3>
         </div>
-        <p class="text-sm text-muted mt-1.5">Enter your Windows account username. This sets your user folder base path.</p>
+        <p class="text-body-sm text-secondary mt-space-sm">Set your Windows account username. This sets the base folder for added paths. You can change it anytime.</p>
       </div>
-      <div class="px-6 py-5 space-y-3">
-        <label class="text-[11px] uppercase tracking-[0.12em] text-muted font-semibold">Windows username</label>
-        <input id="usernameInput" type="text" placeholder="username" class="w-full px-3 py-2.5 border border-line text-ink placeholder-muted/50 focus:outline-none focus:border-ink ease font-mono text-sm rounded-lg"/>
-        <div class="text-xs text-muted">Your folders live under <span class="font-mono text-ink">C:\Users\&lt;username&gt;</span>.</div>
+      <div class="px-space-xl py-space-lg space-y-3">
+        <label class="text-caption font-caption text-secondary uppercase tracking-wider">Windows username</label>
+        <input id="usernameInput" type="text" placeholder="username" class="w-full h-10 px-3 rounded-lg border border-surface-variant bg-surface-container-lowest text-body-sm focus:ring-0 focus:border-primary font-label-md"/>
+        <div class="text-caption text-secondary">Your folders live under <span class="font-label-md text-on-surface">C:\Users\&lt;username&gt;</span>.</div>
       </div>
-      <div class="px-6 py-4 border-t border-line flex justify-end gap-2">
-        <button id="btnSkipUser" class="px-4 py-2 text-sm text-muted hover:text-ink ease rounded-md">Skip</button>
-        <button id="btnSaveUser" class="px-5 py-2 bg-ink text-white font-medium text-sm ease hover:opacity-80 rounded-lg">Save</button>
+      <div class="px-space-xl py-space-md border-t border-surface-variant flex justify-end gap-2">
+        <button id="btnSkipUser" class="px-4 py-2 text-body-sm text-secondary hover:text-on-surface transition-colors rounded-lg">Skip</button>
+        <button id="btnSaveUser" class="px-5 py-2 bg-primary text-on-primary font-medium text-body-sm rounded-lg active:scale-[0.98] transition-all">Save</button>
       </div>
     </div>
   </div>
 
   <!-- Add path modal -->
   <div id="addPathModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop">
-    <div class="bg-white w-[500px] max-w-[90vw] border border-line overflow-hidden ease rounded-xl">
-      <div class="px-6 py-5 border-b border-line">
-        <h3 class="text-base font-semibold text-ink">Add Folder Path</h3>
-        <p class="text-sm text-muted mt-1.5">Pick folders with the browser, or type a path manually.</p>
+    <div class="bg-surface-container-lowest w-[500px] max-w-[90vw] border border-surface-variant rounded-xl overflow-hidden shadow-2xl">
+      <div class="px-space-xl py-space-lg border-b border-surface-variant">
+        <h3 class="font-headline-md text-on-surface">Add Folder Path</h3>
+        <p class="text-body-sm text-secondary mt-space-sm">Pick folders with the browser, or type a path manually.</p>
       </div>
-      <div class="px-6 py-5 space-y-3">
-        <button id="btnBrowse" class="w-full flex items-center justify-center gap-2 py-3 border border-line bg-white text-ink hover:bg-ink hover:text-white ease text-sm font-medium rounded-lg">
-          <span class="material-symbols-outlined text-[18px]">folder_open</span>
+      <div class="px-space-xl py-space-lg space-y-3">
+        <button id="btnBrowse" class="w-full h-10 rounded-lg border border-surface-variant bg-surface-container-lowest hover:bg-surface-variant text-on-surface flex items-center justify-center gap-2 text-body-sm font-medium transition-colors no-drag">
+          <span class="material-symbols-outlined !text-[18px] text-secondary">folder_open</span>
           Browse folders...
         </button>
-        <div class="text-xs text-center text-muted">— or —</div>
-        <input id="manualPathInput" type="text" placeholder="C:\Users\yourname\Documents\myfolder" class="w-full px-3 py-2.5 border border-line text-ink placeholder-muted/50 focus:outline-none focus:border-ink ease font-mono text-sm rounded-lg"/>
+        <div class="text-caption text-center text-secondary">— or —</div>
+        <input id="manualPathInput" type="text" placeholder="C:\Users\yourname\Documents\myfolder" class="w-full h-10 px-3 rounded-lg border border-surface-variant bg-surface-container-lowest text-body-sm focus:ring-0 focus:border-primary font-label-md"/>
       </div>
-      <div class="px-6 py-4 border-t border-line flex justify-end gap-2">
-        <button id="btnCancelAdd" class="px-4 py-2 text-sm text-muted hover:text-ink ease rounded-md">Cancel</button>
-        <button id="btnConfirmAdd" class="px-5 py-2 bg-ink text-white font-medium text-sm ease hover:opacity-80 rounded-lg">Add</button>
+      <div class="px-space-xl py-space-md border-t border-surface-variant flex justify-end gap-2">
+        <button id="btnCancelAdd" class="px-4 py-2 text-body-sm text-secondary hover:text-on-surface transition-colors rounded-lg">Cancel</button>
+        <button id="btnConfirmAdd" class="px-5 py-2 bg-primary text-on-primary font-medium text-body-sm rounded-lg active:scale-[0.98] transition-all">Add</button>
       </div>
     </div>
   </div>
 
+  <!-- Dry-run modal -->
+  <div id="dryRunModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop">
+    <div class="bg-surface-container-lowest w-[620px] max-w-[92vw] max-h-[80vh] border border-surface-variant rounded-xl overflow-hidden shadow-2xl flex flex-col">
+      <div class="px-space-xl py-space-lg border-b border-surface-variant flex-shrink-0">
+        <h3 class="font-headline-md text-on-surface">Preview deletion</h3>
+        <p class="text-body-sm text-secondary mt-space-sm">The following items will be moved to the Recycle Bin. Folders themselves will remain.</p>
+      </div>
+      <div class="px-space-xl py-space-md overflow-y-auto flex-1">
+        <div class="text-body-sm text-secondary mb-2">Items: <span id="dryCount" class="font-medium text-on-surface">0</span> · Total size: <span id="drySize" class="font-medium text-on-surface">0 B</span></div>
+        <ul id="dryList" class="space-y-1 text-label-sm font-label-md max-h-60 overflow-y-auto border border-surface-variant rounded-lg p-space-sm bg-surface-container-low"></ul>
+      </div>
+      <div class="px-space-xl py-space-md border-t border-surface-variant flex-shrink-0 space-y-3">
+        <label class="flex items-center gap-2 text-body-sm">
+          <input type="checkbox" id="confirmCheck" class="w-4 h-4 rounded border-outline"/>
+          <span>I understand this will delete the contents (moved to Recycle Bin).</span>
+        </label>
+        <div class="flex justify-end gap-2">
+          <button id="btnCancelDry" class="px-4 py-2 text-body-sm text-secondary hover:text-on-surface transition-colors rounded-lg">Cancel</button>
+          <button id="btnConfirmDry" class="px-5 py-2 bg-primary text-on-primary font-medium text-body-sm rounded-lg active:scale-[0.98] transition-all disabled:opacity-40 disabled:cursor-not-allowed" disabled>Move to Recycle Bin</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Context menu -->
+  <div id="ctxMenu" class="hidden fixed z-50 min-w-[160px] rounded-lg border border-surface-variant bg-surface-container-lowest shadow-xs py-1">
+    <button id="ctxRemove" class="w-full text-left px-3 py-1.5 text-body-sm hover:bg-surface-variant transition-colors">Remove from list</button>
+  </div>
   <script src="app.js"></script>
 </body>
 </html>
