@@ -1,6 +1,17 @@
-# Folder Path Manager (Electron)
+# Folder Path Manager
 
-A desktop app to manage a list of Windows folder paths: add, select (single/multiple), delete (removes the folder from disk), and export/import the list.
+A minimalist Electron desktop app for managing a list of Windows folder paths — add, select, delete, and import/export.
+
+![monochrome UI](https://img.shields.io/badge/UI-monochrome-000?style=flat-square)
+
+## Features
+
+- **First-run setup** — asks for your Windows account username (e.g. `kuro`) to set the `C:\Users\<username>` base path.
+- **Add folders** — via a native multi-select folder picker or by typing a path manually.
+- **Multi-select** — checkboxes plus Select all / Clear.
+- **Delete** — permanently removes selected folders from disk (with confirmation).
+- **Import / Export** — JSON or plain text lists, merged and de-duplicated.
+- **Monochrome UI** — clean white & black, square corners, modern spacing.
 
 ## Run
 
@@ -9,13 +20,24 @@ npm install
 npm start
 ```
 
-## Features
+Requires Node.js 18+ and Windows.
 
-- First-run prompt for your Windows account username (e.g. `kuro`), used as the base `C:\Users\<username>` folder.
-- Add folders via a native folder picker or by typing a path.
-- Multi-select folders with checkboxes.
-- Delete selected folders from disk (with confirmation).
-- Export the list to JSON or TXT.
-- Import a list from JSON or TXT.
+## Data
 
-Data is stored in the Electron user data directory (`config.json`).
+Paths and username are stored in `config.json` inside Electron's user data directory.
+
+## Project structure
+
+```
+folder-path-manager/
+├── main.js        # Electron main process + IPC handlers
+├── preload.js     # context bridge
+├── renderer/
+│   ├── index.html # UI (Tailwind via CDN)
+│   └── app.js     # renderer logic
+└── README.md
+```
+
+## License
+
+MIT
