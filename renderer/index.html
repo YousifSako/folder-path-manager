@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Folder Path Manager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          "bg": "#ffffff",
+          "fg": "#0a0a0a",
+          "muted": "#737373",
+          "line": "#e5e5e5",
+          "surface": "#fafafa",
+          "ink": "#0a0a0a"
+        },
+        fontFamily: {
+          "body": ["Inter","sans-serif"],
+          "mono": ["JetBrains Mono","monospace"]
+        },
+        borderRadius: { "DEFAULT": "8px", "lg": "10px", "xl": "12px", "2xl": "16px", "full": "9999px" }
+      }
+    }
+  }
+</script>
+<style>
+  body { font-family: 'Inter', sans-serif; background: #ffffff; color: #0a0a0a; -webkit-font-smoothing: antialiased; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 22; vertical-align: middle; }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #d4d4d4; }
+  ::-webkit-scrollbar-thumb:hover { background: #0a0a0a; }
+  .drag-region { -webkit-app-region: drag; }
+  .no-drag { -webkit-app-region: no-drag; }
+  .row-selected { background: #0a0a0a; color: #ffffff; }
+  .row-selected .muted-text { color: rgba(255,255,255,0.6); }
+  input[type="checkbox"] { accent-color: #0a0a0a; border-radius: 0; }
+  .ease { transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease, opacity 160ms ease; }
+  .backdrop { backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  .hairline { border-color: #e5e5e5; }
+</style>
+</head>
+<body class="h-screen overflow-hidden flex flex-col">
+  <!-- Title bar -->
+  <header class="drag-region h-12 flex items-center justify-between pl-6 pr-40 bg-white border-b border-line flex-shrink-0">
+    <div class="flex items-center gap-3 no-drag">
+      <span class="material-symbols-outlined text-ink text-[20px]">folder_managed</span>
+      <span class="font-semibold text-ink tracking-tight text-[15px]">Folder Path Manager</span>
+    </div>
+    <div class="flex items-center gap-3 no-drag">
+      <div id="userBadge" class="hidden items-center gap-2 px-3 py-1 border border-line text-sm rounded-full">
+        <span class="material-symbols-outlined text-ink text-base">person</span>
+        <span id="userBadgeName" class="text-ink text-sm"></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Toast (top-center, never overlaps buttons) -->
+  <div id="toast" class="hidden fixed top-16 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 border border-ink bg-white text-ink text-sm font-medium ease rounded-lg"></div>
+
+  <!-- Main -->
+  <div class="flex flex-1 overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="w-64 flex-shrink-0 bg-white border-r border-line flex flex-col p-5 gap-4">
+      <button id="btnAdd" class="no-drag flex items-center justify-center gap-2 w-full py-3 bg-ink text-white font-medium text-sm ease hover:opacity-80 rounded-lg">
+        <span class="material-symbols-outlined text-[18px]">add</span>
+        Add Folder
+      </button>
+      <div class="flex gap-2">
+        <button id="btnImport" class="no-drag flex-1 flex items-center justify-center gap-1.5 py-2.5 border border-line bg-white text-ink hover:bg-ink hover:text-white ease text-sm font-medium rounded-lg">
+          <span class="material-symbols-outlined text-[17px]">file_upload</span>
+          Import
+        </button>
+        <button id="btnExport" class="no-drag flex-1 flex items-center justify-center gap-1.5 py-2.5 border border-line bg-white text-ink hover:bg-ink hover:text-white ease text-sm font-medium rounded-lg">
+          <span class="material-symbols-outlined text-[17px]">file_download</span>
+          Export
+        </button>
+      </div>
+
+      <div class="mt-3">
+        <div class="text-[11px] uppercase tracking-[0.12em] text-muted font-semibold mb-2 px-1">Overview</div>
+        <div class="border border-line p-4 text-sm space-y-2.5 rounded-lg">
+          <div class="flex justify-between items-center"><span class="text-muted">Total paths</span><span id="statTotal" class="font-semibold text-ink tabular-nums">0</span></div>
+          <div class="flex justify-between items-center"><span class="text-muted">Selected</span><span id="statSelected" class="font-semibold text-ink tabular-nums">0</span></div>
+        </div>
+      </div>
+
+      <div class="mt-auto text-[11px] text-muted leading-relaxed px-1">
+        Paths stored locally. Delete removes the folder from disk.
+      </div>
+    </aside>
+
+    <!-- Content -->
+    <main class="flex-1 flex flex-col overflow-hidden bg-white">
+      <!-- Toolbar -->
+      <div class="flex items-center justify-between px-8 py-5 border-b border-line flex-shrink-0">
+        <div>
+          <h1 class="text-xl font-semibold text-ink tracking-tight">Monitored Folders</h1>
+          <p class="text-xs text-muted mt-1">Add, select, and delete folders. Multi-select supported.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="btnSelectAll" class="no-drag px-3 py-1.5 text-sm text-muted hover:text-ink ease rounded-md">Select all</button>
+          <button id="btnClearSel" class="no-drag px-3 py-1.5 text-sm text-muted hover:text-ink ease rounded-md">Clear</button>
+        </div>
+      </div>
+
+      <!-- List -->
+      <div id="listContainer" class="flex-1 overflow-y-auto px-8 py-6">
+        <div id="emptyState" class="hidden flex flex-col items-center justify-center h-full text-center gap-3">
+          <span class="material-symbols-outlined text-[56px] text-line">folder_off</span>
+          <div class="text-muted text-sm">No folders added yet.</div>
+          <div class="text-xs text-muted/70">Click "Add Folder" to get started.</div>
+        </div>
+        <ul id="pathList" class="space-y-2"></ul>
+      </div>
+
+      <!-- Bottom action bar -->
+      <div class="flex items-center justify-between px-8 py-4 border-t border-line bg-white flex-shrink-0">
+        <div class="text-sm text-muted">
+          <span id="selectedCount" class="font-semibold text-ink tabular-nums">0</span> selected
+        </div>
+        <button id="btnDelete" class="no-drag flex items-center gap-2 px-5 py-2.5 bg-ink text-white font-medium text-sm ease hover:opacity-80 disabled:opacity-25 disabled:cursor-not-allowed rounded-lg" disabled>
+          <span class="material-symbols-outlined text-[18px]">delete</span>
+          Delete Selected
+        </button>
+      </div>
+    </main>
+  </div>
+
+  <!-- First-run modal -->
+  <div id="firstRunModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop">
+    <div class="bg-white w-[440px] max-w-[90vw] border border-line overflow-hidden ease rounded-xl">
+      <div class="px-6 py-5 border-b border-line">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-ink text-[20px]">account_circle</span>
+          <h3 class="text-base font-semibold text-ink">First-Run Setup</h3>
+        </div>
+        <p class="text-sm text-muted mt-1.5">Enter your Windows account username. This sets your user folder base path.</p>
+      </div>
+      <div class="px-6 py-5 space-y-3">
+        <label class="text-[11px] uppercase tracking-[0.12em] text-muted font-semibold">Windows username</label>
+        <input id="usernameInput" type="text" placeholder="kuro" class="w-full px-3 py-2.5 border border-line text-ink placeholder-muted/50 focus:outline-none focus:border-ink ease font-mono text-sm rounded-lg"/>
+        <div class="text-xs text-muted">Your folders live under <span class="font-mono text-ink">C:\Users\&lt;username&gt;</span>.</div>
+      </div>
+      <div class="px-6 py-4 border-t border-line flex justify-end gap-2">
+        <button id="btnSkipUser" class="px-4 py-2 text-sm text-muted hover:text-ink ease rounded-md">Skip</button>
+        <button id="btnSaveUser" class="px-5 py-2 bg-ink text-white font-medium text-sm ease hover:opacity-80 rounded-lg">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add path modal -->
+  <div id="addPathModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop">
+    <div class="bg-white w-[500px] max-w-[90vw] border border-line overflow-hidden ease rounded-xl">
+      <div class="px-6 py-5 border-b border-line">
+        <h3 class="text-base font-semibold text-ink">Add Folder Path</h3>
+        <p class="text-sm text-muted mt-1.5">Pick folders with the browser, or type a path manually.</p>
+      </div>
+      <div class="px-6 py-5 space-y-3">
+        <button id="btnBrowse" class="w-full flex items-center justify-center gap-2 py-3 border border-line bg-white text-ink hover:bg-ink hover:text-white ease text-sm font-medium rounded-lg">
+          <span class="material-symbols-outlined text-[18px]">folder_open</span>
+          Browse folders...
+        </button>
+        <div class="text-xs text-center text-muted">— or —</div>
+        <input id="manualPathInput" type="text" placeholder="C:\Users\kuro\Documents\myfolder" class="w-full px-3 py-2.5 border border-line text-ink placeholder-muted/50 focus:outline-none focus:border-ink ease font-mono text-sm rounded-lg"/>
+      </div>
+      <div class="px-6 py-4 border-t border-line flex justify-end gap-2">
+        <button id="btnCancelAdd" class="px-4 py-2 text-sm text-muted hover:text-ink ease rounded-md">Cancel</button>
+        <button id="btnConfirmAdd" class="px-5 py-2 bg-ink text-white font-medium text-sm ease hover:opacity-80 rounded-lg">Add</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

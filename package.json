@@ -1,0 +1,15 @@
+{
+  "name": "folder-path-manager",
+  "version": "1.0.0",
+  "description": "Electron app to manage, export/import, and delete Windows folder paths",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron ."
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^45.3.3"
+  }
+}
