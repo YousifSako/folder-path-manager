@@ -117,6 +117,12 @@ async function loadConfig() {
   state.username = cfg.username || '';
   state.paths = cfg.paths || [];
   state.firstRun = !!cfg.firstRun;
+  if (els.usernameInput && cfg.hostname) {
+    els.usernameInput.placeholder = cfg.hostname;
+  }
+  if (els.manualPathInput && cfg.hostname) {
+    els.manualPathInput.placeholder = `C:\\Users\\${cfg.hostname}\\Documents\\myfolder`;
+  }
   // prune selected to existing
   state.selected = new Set([...state.selected].filter(p => state.paths.includes(p)));
   if (state.firstRun) {

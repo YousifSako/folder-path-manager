@@ -73,7 +73,8 @@ ipcMain.handle('get-config', () => {
     username: data.username,
     paths: data.paths,
     firstRun: data.firstRun,
-    suggestedUsername: os.userInfo().username
+    suggestedUsername: os.userInfo().username,
+    hostname: os.hostname()
   };
 });
 

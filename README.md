@@ -6,7 +6,7 @@ A minimalist Electron desktop app for managing a list of Windows folder paths �
 
 ## Features
 
-- **First-run setup** — asks for your Windows account username (e.g. `kuro`) to set the `C:\Users\<username>` base path.
+- **First-run setup** — asks for your Windows account username (e.g. `yourname`) to set the `C:\Users\<username>` base path.
 - **Add folders** — via a native multi-select folder picker or by typing a path manually.
 - **Multi-select** — checkboxes plus Select all / Clear.
 - **Delete** — permanently removes selected folders from disk (with confirmation).
